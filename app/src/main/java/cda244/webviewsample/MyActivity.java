@@ -8,21 +8,18 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.Window;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
-import java.util.prefs.Preferences;
 
 
 public class MyActivity extends Activity {
@@ -32,56 +29,33 @@ public class MyActivity extends Activity {
     private WebViewClient mWebViewClient;
     private WebChromeClient mWebChromeClient;
     private ProgressBar mProgBar;
+    private Button mBtnL, mBtnR;
 
     private DrawerLayout mDrawerLayout;
-    private View mDrawerL;
-    private View mDrawerR;
-    private Button mBtnL, mBtnR;
-    private DrawerLayout.LayoutParams mMainLP;
+    private View mDrawerL, mDrawerR;
     private float lastTranslate = 0.0f;
     private boolean mDrawerOpen=false;
-    private Preferences mPref;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-
         setContentView(R.layout.activity_my);
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         String url = sp.getString("url", FIRST_URL);
-        //Log.d("cda244", "first url " + url);
-
-        Button saveBtn = (Button) findViewById(R.id.save_btn);
-        saveBtn.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String url = ((EditText) findViewById(R.id.edit)).getText().toString();
-                saveURL( url );
-                mWebView.loadUrl(url);
-                mDrawerLayout.closeDrawers();
-
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-            }
-        });
 
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerLayout.setDrawerListener( new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(View drawerView, float slideOffset) {
-                //Log.d("cda244", "onDrawerSlide "+drawerView+"  "+slideOffset);
-
                 float moveFactor = (drawerView.getWidth() * slideOffset);
 
                 if(drawerView == mDrawerR ){    moveFactor *= -1;   }
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-                {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
                     findViewById(R.id.main).setTranslationX(moveFactor);
                 } else {
                     TranslateAnimation anim = new TranslateAnimation(lastTranslate, moveFactor, 0.0f, 0.0f);
@@ -95,76 +69,129 @@ public class MyActivity extends Activity {
 
             @Override
             public void onDrawerOpened(View drawerView) {
-                //Log.d("cda244", "onDrawerOpened "+drawerView);
                 mDrawerOpen = true;
             }
 
             @Override
             public void onDrawerClosed(View drawerView) {
-                //Log.d("cda244", "onDrawerClosed "+drawerView);
                 mDrawerOpen = false;
             }
 
             @Override
-            public void onDrawerStateChanged(int newState) {
-                //Log.d("cda244", "onDrawerStateChanged "+newState);
-            }
+            public void onDrawerStateChanged(int newState) {    }
         });
-
-        mMainLP = (DrawerLayout.LayoutParams) findViewById(R.id.main).getLayoutParams();
 
         mDrawerL = findViewById(R.id.drawer_left);
         mDrawerR = findViewById(R.id.drawer_right);
 
+        mProgBar = (ProgressBar) findViewById(R.id.prog_bar);
+
         mBtnL = (Button) findViewById(R.id.btn_left);
         mBtnL.setOnClickListener( new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                mDrawerLayout.openDrawer(mDrawerL);
-            }
+            public void onClick(View v) {   mDrawerLayout.openDrawer(mDrawerL); }
         });
 
         mBtnR = (Button) findViewById(R.id.btn_right);
         mBtnR.setOnClickListener( new View.OnClickListener() {
             @Override
+            public void onClick(View v) {   mDrawerLayout.openDrawer(mDrawerR); }
+        });
+
+
+
+        Button reloadBtn = (Button) findViewById(R.id.reload_btn);
+        reloadBtn.setOnClickListener( new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
-                mDrawerLayout.openDrawer(mDrawerR);
+                showToast("リロード");
+                mWebView.reload();
+                mDrawerLayout.closeDrawers();
             }
         });
 
+        Button clearBtn = (Button) findViewById(R.id.cache_clear_btn);
+        clearBtn.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showToast("キャッシュクリア");
+                mWebView.clearCache(true);  //ローカル含めクリア
+            }
+        });
+
+        Button saveBtn = (Button) findViewById(R.id.save_btn);
+        saveBtn.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = ((EditText) findViewById(R.id.edit)).getText().toString();
+                saveURL( url );
+                mWebView.loadUrl(url);
+                mDrawerLayout.closeDrawers();
+
+                //キーボード非表示
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        });
+
+
         if (savedInstanceState == null) {
-            initClient();
-
-            mProgBar = (ProgressBar) findViewById(R.id.prog_bar);
-
-            mWebView = (WebView) findViewById(R.id.web_view);
-            mWebView.setWebViewClient( mWebViewClient );
-            mWebView.setWebChromeClient( mWebChromeClient );
-            mWebView.setVerticalScrollbarOverlay(true);
-            mWebView.setHorizontalScrollbarOverlay(true);
-            mWebView.getSettings().setJavaScriptEnabled(true);
-            mWebView.getSettings().setDomStorageEnabled(true);
-
+            initWebView();
             mWebView.loadUrl(url);
-
-            Button reloadBtn = (Button) findViewById(R.id.reload_btn);
-            reloadBtn.setOnClickListener( new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mWebView.reload();
-                    showToast("リロード");
-                }
-            });
-
-            Button clearBtn = (Button) findViewById(R.id.cache_clear_btn);
-            clearBtn.setOnClickListener( new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mWebView.clearCache(true);
-                    showToast("キャッシュクリア");
-                }
-            });
         }
+    }
+
+
+    private void initWebView()
+    {
+        initClient();
+
+        mWebView = (WebView) findViewById(R.id.web_view);
+        mWebView.setWebViewClient( mWebViewClient );
+        mWebView.setWebChromeClient( mWebChromeClient );
+        mWebView.setVerticalScrollbarOverlay(true);
+        mWebView.setHorizontalScrollbarOverlay(true);
+        mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView.getSettings().setDomStorageEnabled(true);
+        mWebView.getSettings().setAppCacheEnabled(true);
+        mWebView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+        mWebView.getSettings().setLoadWithOverviewMode(true);
+        mWebView.getSettings().setUseWideViewPort(true);
+    }
+
+
+    private void initClient()
+    {
+        mWebViewClient = new WebViewClient(){
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                mProgBar.setProgress(0);
+                mProgBar.setVisibility(View.VISIBLE);
+                mWebView.requestFocus(View.FOCUS_DOWN);
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                mProgBar.setVisibility(View.INVISIBLE);
+                mWebView.requestFocus(View.FOCUS_DOWN);
+            }
+
+            @Override
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                super.onReceivedError(view, errorCode, description, failingUrl);
+                showToast("ロードエラー\n" + failingUrl);
+                mProgBar.setVisibility(View.INVISIBLE);
+            }
+        };
+
+        mWebChromeClient = new WebChromeClient(){
+            @Override
+            public void onProgressChanged(WebView view, int progress) {
+                mProgBar.setProgress(progress);
+            }
+        };
+
     }
 
 
@@ -203,44 +230,6 @@ public class MyActivity extends Activity {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
-
-    private void initClient()
-    {
-        mWebViewClient = new WebViewClient(){
-            @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                //showToast("ページロード開始\n" + url);
-                mProgBar.setProgress(0);
-                mProgBar.setVisibility(View.VISIBLE);
-                mWebView.requestFocus(View.FOCUS_DOWN);
-            }
-
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-                //showToast("ページロード完了\n" + url);
-                mProgBar.setVisibility(View.INVISIBLE);
-                mWebView.requestFocus(View.FOCUS_DOWN);
-            }
-
-            @Override
-            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                super.onReceivedError(view, errorCode, description, failingUrl);
-                //showToast("ロードエラー\n" + failingUrl);
-                mProgBar.setVisibility(View.INVISIBLE);
-            }
-        };
-
-
-        mWebChromeClient = new WebChromeClient(){
-            @Override
-            public void onProgressChanged(WebView view, int progress) {
-                //Log.d("cda244", "prog "+progress);
-                mProgBar.setProgress(progress);
-            }
-        };
-
-    }
 
     public void saveURL(String url)
     {
