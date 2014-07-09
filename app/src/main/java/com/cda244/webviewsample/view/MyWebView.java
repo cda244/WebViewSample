@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.webkit.JavascriptInterface;
+import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -33,7 +33,7 @@ public class MyWebView extends WebView {
 	public void init( final ProgressBar progBar ) {
 		setVerticalScrollbarOverlay(true);
 		setHorizontalScrollbarOverlay(true);
-		addJavascriptInterface( new JSHandler(), "AndroidNative");
+		//addJavascriptInterface( new JSHandler(), "AndroidNative");
 		getSettings().setJavaScriptEnabled(true);
 		getSettings().setDomStorageEnabled(true);
 		getSettings().setAppCacheEnabled(true);
@@ -80,21 +80,28 @@ public class MyWebView extends WebView {
 			public void onProgressChanged(WebView view, int progress) {
 				progBar.setProgress(progress);
 			}
+
+			@Override
+			public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
+				//return super.onJsAlert(view, url, message, result);
+				if (message.indexOf("HOGE_PIYO")==0) {
+					fromWebView( message.substring(9) );
+					result.confirm();
+					return true;
+				}
+				else {
+					return false;
+				}
+			}
 		};
 		setWebChromeClient(chromeClient);
 	}
 
 
-	// JavaScriptから利用できるオブジェクトのクラス
-	class JSHandler {
-
-		@JavascriptInterface
-		public void fromWebView( String str ) {
-			Log.d("cda244", "webViewから "+str);
-			((MyActivity) getContext()).showToast("webViewから\n"+str);
-		}
+	private void fromWebView(String mes)
+	{
+		((MyActivity) getContext()).showToast(mes);
 	}
-
 
 }
 
@@ -106,3 +113,13 @@ webView.setWebChromeClient(null);
 webView.destroy();
 webView = null;
  */
+
+	/*
+	class JSHandler {
+		@JavascriptInterface
+		public void fromWebView( String str ) {
+			Log.d("cda244", "webViewから "+str);
+			((MyActivity) getContext()).showToast("webViewから\n"+str);
+		}
+	}
+	*/
