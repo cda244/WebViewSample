@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<meta charset="UTF-8">
+	<title>test</title>
+	<script type="text/javascript">
+	function callNativeDialog(str)
+	{
+		//HOGE_PIYOで始まるアラートはネイティブで処理する
+		alert("HOGE_PIYO"+str);
+	}
+	</script>
+</head>
+
+<body style="font-size:30px;">
+	<p>
+	ネイティブのダイアログ表示は <strong>callNativeDialog</strong>を使用。<br />
+	表示に必要なデータをアンダーバー(_)区切りの文字列引数として渡す。<br />
+	</p>
+
+	<p>
+	<strong>タイトル_本文_はいボタンのラベル_いいえボタンのラベル</strong><br />
+	</p>
+	１，２番目のタイトルと本文は必須。<br />
+	３，４番目はオプション。無しの場合は「OK」「NG」になる。
+	</p>
+
+	<p style="background:#ee00ee;" onClick="callNativeDialog('たいとる_本文_はい_いいえ')">
+		＞ネイティブのダイアログ起動<br />
+		　たいとる_本文_はい_いいえ
+	</p>
+
+</body>
+
+</html>

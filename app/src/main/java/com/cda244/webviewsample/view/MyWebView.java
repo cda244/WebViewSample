@@ -1,6 +1,8 @@
 package com.cda244.webviewsample.view;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -61,9 +63,9 @@ public class MyWebView extends WebView {
 				progBar.setVisibility(View.INVISIBLE);
 				requestFocus(View.FOCUS_DOWN);
 
-				loadUrl("javascript:hoge('ネイティブからの呼び出し');");
-				loadUrl("javascript:hoge('　ページ読み込み完了');");
-				loadUrl("javascript:hoge('　url: "+url+"');");
+				//loadUrl("javascript:hoge('ネイティブからの呼び出し');");
+				//loadUrl("javascript:hoge('　ページ読み込み完了');");
+				//loadUrl("javascript:hoge('　url: "+url+"');");
 			}
 
 			@Override
@@ -85,7 +87,7 @@ public class MyWebView extends WebView {
 			public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
 				//return super.onJsAlert(view, url, message, result);
 				if (message.indexOf("HOGE_PIYO")==0) {
-					fromWebView( message.substring(9) );
+					fromWebView(message.substring(9));
 					result.confirm();
 					return true;
 				}
@@ -101,6 +103,40 @@ public class MyWebView extends WebView {
 	private void fromWebView(String mes)
 	{
 		((MyActivity) getContext()).showToast(mes);
+
+		String[] str = mes.split("_");
+		String okBtnTxt="OK";
+		String ngBtnTxt="NG";
+
+		if(str.length>=3){  okBtnTxt = str[2];  }
+		if(str.length>=4){  ngBtnTxt = str[3];  }
+
+
+		AlertDialog.Builder alertDialog=new AlertDialog.Builder(getContext());
+
+		alertDialog.setTitle( str[0] );
+		alertDialog.setMessage( str[1] );
+
+		alertDialog.setPositiveButton(okBtnTxt, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				Log.d("cda244", "Positive which :" + which);
+			}
+		});
+
+		alertDialog.setNegativeButton(ngBtnTxt, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				Log.d("cda244", "Negative which :" + which);
+			}
+		});
+		/*
+		alertDialog.setNeutralButton("SKIP", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				// SKIPボタン押下時の処理
+			}
+		});
+		*/
+
+		alertDialog.show();
 	}
 
 }

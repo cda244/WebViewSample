@@ -111,7 +111,7 @@ public class MyActivity extends Activity {
 			webView.init( mProgBar );
 
 		//webView.loadUrl(url);
-		webView.loadUrl("http://cda244.com/dm.html");
+		webView.loadUrl("file:///android_asset/dm.html");
 		//}
 	}
 
