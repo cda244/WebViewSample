@@ -109,7 +109,9 @@ public class MyActivity extends Activity {
 
 			webView = (MyWebView) findViewById(R.id.web_view);
 			webView.init( mProgBar );
-			webView.loadUrl(url);
+
+		//webView.loadUrl(url);
+		webView.loadUrl("http://cda244.com/dm.html");
 		//}
 	}
 
