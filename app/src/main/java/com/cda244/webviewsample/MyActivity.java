@@ -69,9 +69,9 @@ public class MyActivity extends Activity {
 			@Override
 			public void onDrawerSlide(View drawerView, float slideOffset) {
 
-				if (drawerView == findViewById(R.id.drawer_right) ) {
+				if (drawerView == findViewById(R.id.drawer_right)) {
 					float moveFactor = -(drawerView.getWidth() * slideOffset);
-                /*
+		            /*
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB){
                     //描画が遅れる
                     findViewById(R.id.main).setTranslationX(moveFactor);
@@ -105,13 +105,13 @@ public class MyActivity extends Activity {
 
 
 		//if (savedInstanceState == null) {
-			mProgBar = (ProgressBar) findViewById(R.id.prog_bar);
+		mProgBar = (ProgressBar) findViewById(R.id.prog_bar);
 
-			webView = (MyWebView) findViewById(R.id.web_view);
-			webView.init( mProgBar );
+		webView = (MyWebView) findViewById(R.id.web_view);
+		webView.init(mProgBar);
 
-		//webView.loadUrl(url);
-		webView.loadUrl("file:///android_asset/dm.html");
+		webView.loadUrl(url);
+		//webView.loadUrl("file:///android_asset/dm.html");
 		//}
 	}
 

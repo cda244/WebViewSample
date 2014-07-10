@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">ウェブビューサンプル</string>
-    <string name="btn_drawer_right">右</string>
-    <string name="reload_btn_txt">リロード</string>
-    <string name="cache_clear_btn_txt">キャッシュクリア</string>
-    <string name="save_url_btn_txt">URLを保存</string>
-    <string name="url_base">http://</string>
+	<string name="app_name">ウェブビューサンプル</string>
+	<string name="btn_drawer_right">右</string>
+	<string name="reload_btn_txt">リロード</string>
+	<string name="cache_clear_btn_txt">キャッシュクリア</string>
+	<string name="save_url_btn_txt">URLを保存</string>
+	<string name="url_base">http://</string>
 
 </resources>
