@@ -1,4 +1,4 @@
-package com.cda244.webviewsample;
+package com.cda244.sample.webviewsample;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -15,8 +15,9 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.cda244.webviewsample.view.MyDrawerLayout;
-import com.cda244.webviewsample.view.MyWebView;
+import com.cda244.sample.webviewsample.R;
+import com.cda244.sample.webviewsample.view.MyDrawerLayout;
+import com.cda244.sample.webviewsample.view.MyWebView;
 
 
 public class MyActivity extends Activity {

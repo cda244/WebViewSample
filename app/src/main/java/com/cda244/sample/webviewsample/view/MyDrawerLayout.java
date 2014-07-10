@@ -1,4 +1,4 @@
-package com.cda244.webviewsample.view;
+package com.cda244.sample.webviewsample.view;
 
 import android.content.Context;
 import android.support.v4.widget.DrawerLayout;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
-	package="com.cda244.webviewsample"
+	package="com.cda244.sample.webviewsample"
 	xmlns:android="http://schemas.android.com/apk/res/android">
 
 	<uses-permission android:name="android.permission.INTERNET"/>
@@ -14,7 +14,7 @@
 		android:label="@string/app_name"
 		android:theme="@android:style/Theme.Black.NoTitleBar">
 		<activity
-			android:name="com.cda244.webviewsample.MyActivity"
+			android:name="com.cda244.sample.webviewsample.MyActivity"
 			android:label="@string/app_name"
 			android:screenOrientation="portrait">
 			<intent-filter>

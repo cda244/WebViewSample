@@ -1,4 +1,4 @@
-package com.cda244.webviewsample.view;
+package com.cda244.sample.webviewsample.view;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -14,7 +14,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
-import com.cda244.webviewsample.MyActivity;
+import com.cda244.sample.webviewsample.MyActivity;
 
 
 public class MyWebView extends WebView {

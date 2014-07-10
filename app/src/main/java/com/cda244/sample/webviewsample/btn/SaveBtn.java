@@ -1,4 +1,4 @@
-package com.cda244.webviewsample.btn;
+package com.cda244.sample.webviewsample.btn;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 
-import com.cda244.webviewsample.MyActivity;
+import com.cda244.sample.webviewsample.MyActivity;
 
 public class SaveBtn extends Button implements View.OnClickListener {
 

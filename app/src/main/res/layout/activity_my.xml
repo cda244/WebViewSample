@@ -1,4 +1,4 @@
-<com.cda244.webviewsample.view.MyDrawerLayout
+<com.cda244.sample.webviewsample.view.MyDrawerLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:id="@+id/drawer_layout"
 	android:layout_width="match_parent"
@@ -12,14 +12,14 @@
 		android:layout_height="match_parent">
 
 
-		<com.cda244.webviewsample.btn.DrawerBtn
+		<com.cda244.sample.webviewsample.btn.DrawerBtn
 			android:id="@+id/btn_right"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_alignParentRight="true"
 			android:text="@string/btn_drawer_right" />
 
-		<com.cda244.webviewsample.view.MyWebView
+		<com.cda244.sample.webviewsample.view.MyWebView
 			android:id="@+id/web_view"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
@@ -53,23 +53,23 @@
 			android:inputType="textUri"
 			android:text="@string/url_base" />
 
-		<com.cda244.webviewsample.btn.SaveBtn
+		<com.cda244.sample.webviewsample.btn.SaveBtn
 			android:id="@+id/save_btn"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:text="@string/save_url_btn_txt"
 			android:layout_marginBottom="20dp"/>
 
-		<com.cda244.webviewsample.btn.ReloadBtn
+		<com.cda244.sample.webviewsample.btn.ReloadBtn
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:text="@string/reload_btn_txt" />
 
-		<com.cda244.webviewsample.btn.CacheClearBtn
+		<com.cda244.sample.webviewsample.btn.CacheClearBtn
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:text="@string/cache_clear_btn_txt" />
 
 	</LinearLayout>
 
-</com.cda244.webviewsample.view.MyDrawerLayout>
+</com.cda244.sample.webviewsample.view.MyDrawerLayout>
